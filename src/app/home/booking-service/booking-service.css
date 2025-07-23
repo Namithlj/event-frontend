@@ -1,0 +1,120 @@
+.booking-container {
+  background: url('/workerbg.jpg') no-repeat center center / cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+/* Dark glass-like form card */
+.booking-form {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(20, 20, 20, 0.85);
+  border-radius: 14px;
+  padding: 35px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+/* Heading */
+.booking-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Labels */
+.booking-form label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+  color: #e0e0e0;
+}
+
+/* Inputs & Select */
+.booking-form input,
+.booking-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(58, 58, 58, 0.9);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.booking-form input:focus,
+.booking-form select:focus {
+  outline: none;
+  box-shadow: 0 0 10px #ff9800;
+}
+
+/* Checkbox alignment */
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.service-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff9800;
+}
+
+.service-item span {
+  font-size: 1rem;
+  color: #f1f1f1;
+}
+
+/* Total Price Highlight */
+.booking-form .total {
+  margin-top: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffd54f;
+}
+
+/* Submit Button */
+.booking-form button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff9800, #e65100);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.booking-form button:hover {
+  background: linear-gradient(135deg, #e65100, #bf360c);
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .booking-container {
+    padding: 20px;
+  }
+
+  .booking-form {
+    padding: 25px;
+  }
+
+  .booking-form h2 {
+    font-size: 1.6rem;
+  }
+}

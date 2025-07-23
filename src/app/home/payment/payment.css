@@ -1,0 +1,109 @@
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+/* Glass effect but more visible */
+.payment-form {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(30, 30, 30, 0.85); /* Dark but visible */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+
+/* Heading */
+.payment-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
+/* Labels */
+.payment-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #f5f5f5;
+}
+
+/* Input Fields */
+.payment-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff; /* Normal white */
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.payment-form input::placeholder {
+  color: #999;
+}
+
+.payment-form input:focus {
+  outline: none;
+  border: 1px solid #ff9800;
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
+}
+
+/* Dropdown (Fixed style) */
+.payment-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.payment-form select:focus {
+  outline: none;
+  border: 1px solid #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.6);
+}
+
+/* UPI Section */
+.upi-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.upi-section img {
+  width: 120px;
+  margin: 10px auto;
+  display: block;
+}
+.upi-section p {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+/* Button */
+.payment-form button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff9800, #e65100);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.payment-form button:hover {
+  background: linear-gradient(135deg, #e65100, #bf360c);
+}

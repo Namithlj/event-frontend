@@ -1,0 +1,77 @@
+/* Full-screen background wrapper */
+.login-wrapper {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: 
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('/login.jpeg')
+    no-repeat center center / cover;
+}
+
+/* Glass effect container */
+.login-container {
+  max-width: 350px;
+  width: 90%;
+  padding: 30px 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: fadeIn 1s ease forwards;
+}
+
+/* Heading */
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Inputs */
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+  background: #f0f0f0;
+  transition: all 0.3s ease;
+}
+.login-container input:focus {
+  outline: none;
+  background: #e0e0e0;
+  box-shadow: 0 0 5px #84fab0;
+}
+
+/* Buttons */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: linear-gradient(45deg, #84fab0, #8fd3f4);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.login-container button:hover {
+  transform: scale(1.05);
+}
+
+/* Text under form */
+.login-container p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Fade-in effect */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

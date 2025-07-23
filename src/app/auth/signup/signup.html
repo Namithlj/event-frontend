@@ -1,0 +1,16 @@
+<div class="signup-wrapper">
+  <div class="signup-container">
+    <h2>Signup</h2>
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+      <input type="text" placeholder="Name" [(ngModel)]="name" name="name" required />
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <input type="text" placeholder="Mobile No" [(ngModel)]="mobile" name="mobile" required />
+      <input type="text" placeholder="Pincode" [(ngModel)]="pincode" name="pincode" required />
+      <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required />
+      <button type="submit">Signup</button>
+    </form>
+    <p>Already have an account?
+      <button type="button" (click)="goToLogin()">Login</button>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="worker-container" @fadeIn>
+  <form (ngSubmit)="onSubmit()" #workerForm="ngForm">
+    <h2>Worker Registration</h2>
+    
+    <label for="serviceType">Service Type:</label>
+    <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
+      <option value="">-- Select Service --</option>
+      <option value="catering">Catering</option>
+      <option value="catering-boys">Catering Boys</option>
+      <option value="vehicle">Vehicle for Transport</option>
+      <option value="hall">Function Hall</option>
+      <option value="decoration">Decoration</option>
+    </select>
+
+    <label for="location">Location (Pincode):</label>
+    <input type="text" id="location" [(ngModel)]="location" name="location" required />
+
+    <label for="price">Price (₹):</label>
+    <input type="number" id="price" [(ngModel)]="price" name="price" required />
+
+    <!-- Conditional Fields -->
+    <div *ngIf="serviceType === 'catering'">
+      <label for="cateringItems">Catering Items:</label>
+      <input type="text" id="cateringItems" [(ngModel)]="cateringItems" name="cateringItems" placeholder="Eg: Veg/Non-Veg Menu" />
+    </div>
+
+    <div *ngIf="serviceType === 'catering-boys'">
+      <label for="cateringBoysCount">No. of Catering Boys:</label>
+      <input type="number" id="cateringBoysCount" [(ngModel)]="cateringBoysCount" name="cateringBoysCount" />
+    </div>
+
+    <div *ngIf="serviceType === 'vehicle'">
+      <label for="vehicleType">Vehicle Type:</label>
+      <input type="text" id="vehicleType" [(ngModel)]="vehicleType" name="vehicleType" placeholder="Eg: Truck/Van" />
+    </div>
+
+    <div *ngIf="serviceType === 'hall'">
+      <label for="hallCapacity">Hall Capacity:</label>
+      <input type="number" id="hallCapacity" [(ngModel)]="hallCapacity" name="hallCapacity" placeholder="Eg: 500" />
+    </div>
+
+    <div *ngIf="serviceType === 'decoration'">
+      <label for="decorationTheme">Decoration Theme:</label>
+      <input type="text" id="decorationTheme" [(ngModel)]="decorationTheme" name="decorationTheme" placeholder="Eg: Floral, Lighting" />
+    </div>
+
+    <button type="submit">Register</button>
+  </form>
+</div>

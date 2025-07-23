@@ -1,0 +1,42 @@
+<div class="booking-container" [@fadeIn]>
+  <form class="booking-form" (ngSubmit)="onSubmit()" #bookingForm="ngForm">
+    <h2>Book Services for Your Event</h2>
+
+    <!-- Personal Details -->
+    <div class="form-group">
+      <label for="name">Full Name:</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input id="phone" type="tel" [(ngModel)]="phone" name="phone" required />
+    </div>
+
+    <div class="form-group">
+      <label for="location">Event Location:</label>
+      <input id="location" type="text" [(ngModel)]="location" name="location" required />
+    </div>
+
+    <!-- Services Selection -->
+    <h3>Select Services</h3>
+    <div *ngFor="let service of availableServices" class="service-item">
+      <label class="checkbox-label">
+        <input type="checkbox"
+               [value]="service.name"
+               (change)="onServiceChange($event, service)" />
+        <span>{{ service.name }} - ₹{{ service.price }}</span>
+      </label>
+    </div>
+
+    <!-- Total Price -->
+    <h3 class="total">Total Price: ₹{{ totalPrice }}</h3>
+
+    <button type="submit">Submit Booking</button>
+  </form>
+</div>

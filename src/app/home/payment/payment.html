@@ -1,0 +1,44 @@
+<div class="payment-container fade-in">
+  <form class="payment-form" (ngSubmit)="onSubmit()" #paymentForm="ngForm">
+    <h2>Payment Details</h2>
+
+    <!-- Payment Method -->
+    <label for="paymentMethod">Select Payment Method:</label>
+    <select id="paymentMethod" [(ngModel)]="paymentMethod" name="paymentMethod" required>
+      <option value="">-- Select Method --</option>
+      <option value="card">Credit/Debit Card</option>
+      <option value="upi">UPI</option>
+    </select>
+
+    <!-- Card Details -->
+    <div *ngIf="paymentMethod === 'card'">
+      <label for="name">Card Holder Name:</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name" required />
+
+      <label for="cardNumber">Card Number:</label>
+      <input id="cardNumber" type="text" [(ngModel)]="cardNumber" name="cardNumber" required />
+
+      <label for="expiry">Expiry Date (MM/YY):</label>
+      <input id="expiry" type="text" [(ngModel)]="expiry" name="expiry" required />
+
+      <label for="cvv">CVV:</label>
+      <input id="cvv" type="password" [(ngModel)]="cvv" name="cvv" required />
+    </div>
+
+    <!-- UPI Details -->
+    <div *ngIf="paymentMethod === 'upi'" class="upi-section">
+      <label for="upiId">UPI ID:</label>
+      <input id="upiId" type="text" [(ngModel)]="upiId" name="upiId" placeholder="example@upi" required />
+      <div class="upi-info">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI Logo" />
+        <p>Pay using any UPI app (PhonePe, GPay, Paytm etc.)</p>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <label for="amount">Amount (₹):</label>
+    <input id="amount" type="number" [(ngModel)]="amount" name="amount" required />
+
+    <button type="submit">Pay Now</button>
+  </form>
+</div>

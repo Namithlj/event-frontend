@@ -1,0 +1,33 @@
+<div class='login-wrapper'>
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+    
+    <!-- Email -->
+    <input 
+      type="email" 
+      name="email" 
+      [(ngModel)]="email" 
+      placeholder="Enter your email" 
+      required
+    />
+
+    <!-- Password -->
+    <input 
+      type="password" 
+      name="password" 
+      [(ngModel)]="password" 
+      placeholder="Enter your password" 
+      required
+    />
+
+    <!-- Submit Button -->
+    <button type="submit">Login</button>
+  </form>
+
+  <!-- Signup Link -->
+  <p>Don't have an account?
+    <button type="button" (click)="goToSignup()">Signup</button>
+  </p>
+</div>
+</div>
