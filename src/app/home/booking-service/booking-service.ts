@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BookingService } from '../../services/booking.service';
+
 @Component({
   selector: 'app-booking',
   standalone: true,
@@ -21,56 +23,38 @@ export class BookingServiceComponent {
   selectedDecoration: any;
   selectedPhotography: any;
   selectedFunctionHall: any;
- 
-  functionHallReviewLink = '';
+
   hotelReviewLink = '';
   cateringReviewLink = '';
+  functionHallReviewLink = '';
 
   totalPrice = 0;
-  constructor(private router: Router) {}
   selectedServiceDetails: { name: string; price: number }[] = [];
 
-  availableHotels = [
-    { name: 'Hotel A', pincode: '560101', price: 15000 },
-    { name: 'Hotel B', pincode: '560102', price: 12000 }
-  ];
-  availableFunctionHalls = [
-  { name: 'Function Hall A', pincode: '560101', price: 10000 },
-  { name: 'Function Hall B', pincode: '560102', price: 12000 }
-];
-  availableCatering = [
-    { name: 'Catering A', pincode: '560101', price: 8000 },
-    { name: 'Catering B', pincode: '560104', price: 9500 }
-  ];
-  availableDecoration = [
-    { name: 'Decoration A', pincode: '560101', price: 3000 },
-    { name: 'Decoration B', pincode: '560103', price: 2800 }
-  ];
-  availablePhotography = [
-    { name: 'Photography A', pincode: '560101', price: 4000 },
-    { name: 'Photography B', pincode: '560105', price: 3500 }
-  ];
+  availableHotels: any[] = [];
+  availableFunctionHalls: any[] = [];
+  availableCatering: any[] = [];
+  availableDecoration: any[] = [];
+  availablePhotography: any[] = [];
 
-  filteredHotels = [...this.availableHotels];
-  filteredCatering = [...this.availableCatering];
-  filteredDecoration = [...this.availableDecoration];
-  filteredPhotography = [...this.availablePhotography];
-  filteredFunctionHalls = [...this.availableFunctionHalls];
+  constructor(private router: Router, private bookingService: BookingService) {}
 
   filterNearestServices() {
-    this.filteredFunctionHalls = this.filterByPincode(this.availableFunctionHalls);
-    this.filteredHotels = this.filterByPincode(this.availableHotels);
-    this.filteredCatering = this.filterByPincode(this.availableCatering);
-    this.filteredDecoration = this.filterByPincode(this.availableDecoration);
-    this.filteredPhotography = this.filterByPincode(this.availablePhotography);
-  }
+    if (!this.pincode || !this.eventDate) {
+      alert('Please enter event date and pincode');
+      return;
+    }
 
-  filterByPincode(list: any[]) {
-    const exactMatch = list.filter(item => item.pincode === this.pincode);
-    if (exactMatch.length > 0) return exactMatch;
-    return list; // fallback to all services if no exact match
+    this.bookingService.getNearestServices(this.pincode, this.eventDate)
+      .subscribe((data: any) => {
+        this.availableHotels = data.hotels;
+        this.availableFunctionHalls = data.functionHalls;
+        this.availableCatering = data.catering;
+        this.availableDecoration = data.decoration;
+        this.availablePhotography = data.photography;
+        if (data.message) alert(data.message);
+      });
   }
-
 
   onHotelChange() {
     if (this.selectedHotel) {
@@ -79,32 +63,28 @@ export class BookingServiceComponent {
     }
   }
 
-  onCateringChange(event:any) {
+  onCateringChange() {
     if (this.selectedCatering) {
       this.cateringReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedCatering.name)}+reviews`;
       this.addOrReplaceService('Catering', this.selectedCatering.price);
     }
   }
+
   onFunctionHallChange() {
-  if (this.selectedFunctionHall) {
-    this.functionHallReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedFunctionHall.name)}+reviews`;
-    this.addOrReplaceService('Function Hall', this.selectedFunctionHall.price);
+    if (this.selectedFunctionHall) {
+      this.functionHallReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedFunctionHall.name)}+reviews`;
+      this.addOrReplaceService('Function Hall', this.selectedFunctionHall.price);
+    }
   }
-}
 
   onServiceDropdownChange(serviceName: string, selected: any) {
-    if (selected) {
-      this.addOrReplaceService(serviceName, selected.price);
-    }
+    if (selected) this.addOrReplaceService(serviceName, selected.price);
   }
 
   addOrReplaceService(serviceName: string, price: number) {
     const existing = this.selectedServiceDetails.find(s => s.name === serviceName);
-    if (existing) {
-      existing.price = price;
-    } else {
-      this.selectedServiceDetails.push({ name: serviceName, price });
-    }
+    if (existing) existing.price = price;
+    else this.selectedServiceDetails.push({ name: serviceName, price });
     this.calculateTotal();
   }
 
@@ -117,16 +97,23 @@ export class BookingServiceComponent {
       alert('Please select date, hotel, and catering vendor.');
       return;
     }
-    console.log('Booking submitted', {
+
+    const bookingData = {
       name: this.name,
       email: this.email,
       phone: this.phone,
       pincode: this.pincode,
       eventDate: this.eventDate,
-      services: this.selectedServiceDetails
+      services: this.selectedServiceDetails,
+      totalPrice: this.totalPrice
+    };
+
+    this.bookingService.createBooking(bookingData).subscribe({
+      next: () => {
+        alert('Booking Successful!');
+        this.router.navigate(['/payment'], { queryParams: { amount: this.totalPrice } });
+      },
+      error: () => alert('Failed to save booking. Try again!')
     });
-    alert('Booking Successful!');
-    
-      this.router.navigate(['/payment'], { queryParams: { amount: this.totalPrice } });
   }
 }

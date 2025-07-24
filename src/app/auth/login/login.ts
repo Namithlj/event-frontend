@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,15 +15,16 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onLogin() {
-    if (this.email && this.password) {
-      console.log('Login success:', this.email, this.password);
-      this.router.navigate(['/home']); // redirect to home page after login
-    } else {
-      alert('Please fill in all fields!');
-    }
+    this.authService.login(this.email, this.password).subscribe(success => {
+      if (success) {
+        this.router.navigate(['/home']);
+      } else {
+        alert('Invalid Credentials');
+      }
+    });
   }
 
   goToSignup() {

@@ -1,34 +1,25 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { trigger, transition, style, animate } from '@angular/animations';
-
+import { WorkerService } from '../../services/worker.service';
 @Component({
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './worker-registration.html',
-  styleUrls: ['./worker-registration.css'],
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ])
-  ]
+  styleUrls: ['./worker-registration.css']
 })
 export class WorkerRegistrationComponent {
   serviceType = '';
   location = '';
   price: number | null = null;
-
-  // Additional fields
   cateringItems = '';
   cateringBoysCount: number | null = null;
   vehicleType = '';
   hallCapacity: number | null = null;
   decorationTheme = '';
+
+  constructor(private workerService: WorkerService) {}
 
   onSubmit() {
     const data = {
@@ -41,7 +32,9 @@ export class WorkerRegistrationComponent {
       hallCapacity: this.hallCapacity,
       decorationTheme: this.decorationTheme
     };
-    console.log('Worker Registration:', data);
-    alert('Worker Registered Successfully!');
+
+    this.workerService.registerWorker(data).subscribe(() => {
+      alert('Worker Registered Successfully!');
+    });
   }
 }
