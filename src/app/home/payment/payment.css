@@ -1,3 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: 
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('/payment.jpeg')
+    no-repeat center center/cover;
+}
+
 .payment-container {
   display: flex;
   justify-content: center;

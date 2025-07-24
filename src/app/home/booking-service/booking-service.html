@@ -1,4 +1,4 @@
-<div class="booking-container" [@fadeIn]>
+<div class="booking-container">
   <form class="booking-form" (ngSubmit)="onSubmit()" #bookingForm="ngForm">
     <h2>Book Services for Your Event</h2>
 
@@ -19,24 +19,88 @@
     </div>
 
     <div class="form-group">
-      <label for="location">Event Location:</label>
-      <input id="location" type="text" [(ngModel)]="location" name="location" required />
+      <label for="pincode">Event Pincode:</label>
+      <input id="pincode" type="text" [(ngModel)]="pincode" name="pincode" required (change)="filterNearestServices()" />
     </div>
 
-    <!-- Services Selection -->
-    <h3>Select Services</h3>
-    <div *ngFor="let service of availableServices" class="service-item">
-      <label class="checkbox-label">
-        <input type="checkbox"
-               [value]="service.name"
-               (change)="onServiceChange($event, service)" />
-        <span>{{ service.name }} - ₹{{ service.price }}</span>
-      </label>
+    <div class="form-group">
+      <label for="date">Event Date:</label>
+      <input id="date" type="date" [(ngModel)]="eventDate" name="eventDate" required />
     </div>
+
+    <!-- Function Hall Selection -->
+    <div class="form-group">
+      <label for="functionHall">Select Function Hall:</label>
+      <select id="functionHall" [(ngModel)]="selectedFunctionHall" name="functionHall" (change)="onFunctionHallChange($event)" required>
+        <option *ngFor="let hall of filteredFunctionHalls" [ngValue]="hall">
+          {{ hall.name }} ({{ hall.pincode }}) - ₹{{ hall.price }}
+        </option>
+      </select>
+      <a *ngIf="functionHallReviewLink" [href]="functionHallReviewLink" target="_blank">View Google Reviews</a>
+    </div>
+
+    <!-- Hotel Selection -->
+    <div class="form-group">
+      <label for="hotel">Select Hotel:</label>
+      <select id="hotel" [(ngModel)]="selectedHotel" name="hotel" (change)="onHotelChange($event)" required>
+        <option *ngFor="let hotel of filteredHotels" [ngValue]="hotel">
+          {{ hotel.name }} ({{ hotel.pincode }}) - ₹{{ hotel.price }}
+        </option>
+      </select>
+      <a *ngIf="hotelReviewLink" [href]="hotelReviewLink" target="_blank">View Google Reviews</a>
+    </div>
+
+    <!-- Catering Selection -->
+    <div class="form-group">
+      <label for="catering">Select Catering Vendor:</label>
+      <select id="catering" [(ngModel)]="selectedCatering" name="catering" (change)="onCateringChange($event)" required>
+        <option *ngFor="let catering of filteredCatering" [ngValue]="catering">
+          {{ catering.name }} ({{ catering.pincode }}) - ₹{{ catering.price }}
+        </option>
+      </select>
+      <a *ngIf="cateringReviewLink" [href]="cateringReviewLink" target="_blank">View Google Reviews</a>
+    </div>
+
+    <!-- Decoration Selection -->
+    <div class="form-group">
+      <label for="decoration">Decoration:</label>
+      <select id="decoration" [(ngModel)]="selectedDecoration" name="decoration" (change)="onServiceDropdownChange('Decoration', selectedDecoration)" required>
+        <option *ngFor="let deco of filteredDecoration" [ngValue]="deco">
+          {{ deco.name }} ({{ deco.pincode }}) - ₹{{ deco.price }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Photography Selection -->
+    <div class="form-group">
+      <label for="photography">Photography:</label>
+      <select id="photography" [(ngModel)]="selectedPhotography" name="photography" (change)="onServiceDropdownChange('Photography', selectedPhotography)" required>
+        <option *ngFor="let photo of filteredPhotography" [ngValue]="photo">
+          {{ photo.name }} ({{ photo.pincode }}) - ₹{{ photo.price }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Selected Services Table -->
+    <h3>Selected Services Summary</h3>
+    <table *ngIf="selectedServiceDetails.length > 0" border="1" width="100%">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedServiceDetails">
+          <td>{{ item.name }}</td>
+          <td>{{ item.price }}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- Total Price -->
     <h3 class="total">Total Price: ₹{{ totalPrice }}</h3>
 
-    <button type="submit">Submit Booking</button>
+    <button type="submit">proceed payment</button>
   </form>
 </div>

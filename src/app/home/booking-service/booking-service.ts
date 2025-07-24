@@ -1,76 +1,132 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { Router } from '@angular/router';   // ✅ Correct import
-
-interface Service {
-  name: string;
-  type: string;
-  price: number;
-}
-
+import { Router } from '@angular/router';
 @Component({
-  selector: 'app-booking-service',
+  selector: 'app-booking',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './booking-service.html',
-  styleUrls: ['./booking-service.css'],
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ])
-  ]
+  styleUrls: ['./booking-service.css']
 })
 export class BookingServiceComponent {
   name = '';
   email = '';
   phone = '';
-  location = '';
+  pincode = '';
+  eventDate = '';
 
-  availableServices: Service[] = [
-    { name: 'Function Hall', type: 'hall', price: 20000 },
-    { name: 'Catering', type: 'catering', price: 15000 },
-    { name: 'Catering Boys', type: 'catering-boys', price: 5000 },
-    { name: 'Vehicle for Transport', type: 'vehicle', price: 3000 },
-    { name: 'Decoration', type: 'decoration', price: 7000 }
+  selectedHotel: any;
+  selectedCatering: any;
+  selectedDecoration: any;
+  selectedPhotography: any;
+  selectedFunctionHall: any;
+ 
+  functionHallReviewLink = '';
+  hotelReviewLink = '';
+  cateringReviewLink = '';
+
+  totalPrice = 0;
+  constructor(private router: Router) {}
+  selectedServiceDetails: { name: string; price: number }[] = [];
+
+  availableHotels = [
+    { name: 'Hotel A', pincode: '560101', price: 15000 },
+    { name: 'Hotel B', pincode: '560102', price: 12000 }
+  ];
+  availableFunctionHalls = [
+  { name: 'Function Hall A', pincode: '560101', price: 10000 },
+  { name: 'Function Hall B', pincode: '560102', price: 12000 }
+];
+  availableCatering = [
+    { name: 'Catering A', pincode: '560101', price: 8000 },
+    { name: 'Catering B', pincode: '560104', price: 9500 }
+  ];
+  availableDecoration = [
+    { name: 'Decoration A', pincode: '560101', price: 3000 },
+    { name: 'Decoration B', pincode: '560103', price: 2800 }
+  ];
+  availablePhotography = [
+    { name: 'Photography A', pincode: '560101', price: 4000 },
+    { name: 'Photography B', pincode: '560105', price: 3500 }
   ];
 
-  selectedServices: string[] = [];
-  totalPrice = 0;
+  filteredHotels = [...this.availableHotels];
+  filteredCatering = [...this.availableCatering];
+  filteredDecoration = [...this.availableDecoration];
+  filteredPhotography = [...this.availablePhotography];
+  filteredFunctionHalls = [...this.availableFunctionHalls];
 
-  constructor(private router: Router) {}   // ✅ Router injection
+  filterNearestServices() {
+    this.filteredFunctionHalls = this.filterByPincode(this.availableFunctionHalls);
+    this.filteredHotels = this.filterByPincode(this.availableHotels);
+    this.filteredCatering = this.filterByPincode(this.availableCatering);
+    this.filteredDecoration = this.filterByPincode(this.availableDecoration);
+    this.filteredPhotography = this.filterByPincode(this.availablePhotography);
+  }
 
-  onServiceChange(event: any, service: Service) {
-    if (event.target.checked) {
-      this.selectedServices.push(service.name);
-      this.totalPrice += service.price;
-    } else {
-      const index = this.selectedServices.indexOf(service.name);
-      if (index > -1) {
-        this.selectedServices.splice(index, 1);
-        this.totalPrice -= service.price;
-      }
+  filterByPincode(list: any[]) {
+    const exactMatch = list.filter(item => item.pincode === this.pincode);
+    if (exactMatch.length > 0) return exactMatch;
+    return list; // fallback to all services if no exact match
+  }
+
+
+  onHotelChange() {
+    if (this.selectedHotel) {
+      this.hotelReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedHotel.name)}+reviews`;
+      this.addOrReplaceService('Hotel', this.selectedHotel.price);
     }
   }
 
-  onSubmit() {
-    if (this.name && this.email && this.phone && this.location && this.selectedServices.length > 0) {
-      console.log('Booking Details:', {
-        name: this.name,
-        email: this.email,
-        phone: this.phone,
-        location: this.location,
-        services: this.selectedServices,
-        totalPrice: this.totalPrice
-      });
-      alert('Booking Successful! Proceed to Payment.');
-      this.router.navigate(['/payment']);   // ✅ works now
-    } else {
-      alert('Please fill all details and select services!');
+  onCateringChange(event:any) {
+    if (this.selectedCatering) {
+      this.cateringReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedCatering.name)}+reviews`;
+      this.addOrReplaceService('Catering', this.selectedCatering.price);
     }
+  }
+  onFunctionHallChange() {
+  if (this.selectedFunctionHall) {
+    this.functionHallReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedFunctionHall.name)}+reviews`;
+    this.addOrReplaceService('Function Hall', this.selectedFunctionHall.price);
+  }
+}
+
+  onServiceDropdownChange(serviceName: string, selected: any) {
+    if (selected) {
+      this.addOrReplaceService(serviceName, selected.price);
+    }
+  }
+
+  addOrReplaceService(serviceName: string, price: number) {
+    const existing = this.selectedServiceDetails.find(s => s.name === serviceName);
+    if (existing) {
+      existing.price = price;
+    } else {
+      this.selectedServiceDetails.push({ name: serviceName, price });
+    }
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    this.totalPrice = this.selectedServiceDetails.reduce((acc, s) => acc + s.price, 0);
+  }
+
+  onSubmit() {
+    if (!this.eventDate || !this.selectedHotel || !this.selectedCatering) {
+      alert('Please select date, hotel, and catering vendor.');
+      return;
+    }
+    console.log('Booking submitted', {
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      pincode: this.pincode,
+      eventDate: this.eventDate,
+      services: this.selectedServiceDetails
+    });
+    alert('Booking Successful!');
+    
+      this.router.navigate(['/payment'], { queryParams: { amount: this.totalPrice } });
   }
 }
