@@ -56,21 +56,21 @@ export class BookingServiceComponent {
       });
   }
 
-  onHotelChange() {
+  onHotelChange(event: any) {
     if (this.selectedHotel) {
       this.hotelReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedHotel.name)}+reviews`;
       this.addOrReplaceService('Hotel', this.selectedHotel.price);
     }
   }
 
-  onCateringChange() {
+  onCateringChange(event: any) {
     if (this.selectedCatering) {
       this.cateringReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedCatering.name)}+reviews`;
       this.addOrReplaceService('Catering', this.selectedCatering.price);
     }
   }
 
-  onFunctionHallChange() {
+  onFunctionHallChange(event: any) {
     if (this.selectedFunctionHall) {
       this.functionHallReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedFunctionHall.name)}+reviews`;
       this.addOrReplaceService('Function Hall', this.selectedFunctionHall.price);

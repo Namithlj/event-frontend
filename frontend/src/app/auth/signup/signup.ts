@@ -22,10 +22,16 @@ export class SignupComponent {
 
   onSignup() {
     const data = { name: this.name, email: this.email, mobile: this.mobile, pincode: this.pincode, password: this.password };
-    this.authService.signup(data).subscribe(() => {
+    console.log(data);
+    this.authService.signup(data).subscribe({next:() => {
       alert('Signup successful!');
       this.router.navigate(['/']);
-    });
+    },error: (err) => {
+      console.error('Signup error:', err);
+      alert('Signup failed! Please try again.');
+    }
+  
+  });
   }
 
   goToLogin() {
