@@ -8,7 +8,13 @@ export class WorkerService {
 
   constructor(private http: HttpClient) {}
 
+  // Register new worker/service
   registerWorker(workerData: any): Observable<any> {
-    return this.http.post(this.baseUrl, workerData);
+    return this.http.post(`${this.baseUrl}/register`, workerData);
+  }
+
+  // Fetch workers/services by pincode & type
+  getWorkersByPincodeAndType(pincode: string, serviceType: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}?pincode=${pincode}&type=${serviceType}`);
   }
 }

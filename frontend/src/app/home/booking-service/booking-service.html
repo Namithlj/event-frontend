@@ -20,20 +20,20 @@
 
     <div class="form-group">
       <label for="pincode">Event Pincode:</label>
-      <input id="pincode" type="text" [(ngModel)]="pincode" name="pincode" required (change)="filterNearestServices()" />
+      <input id="pincode" type="text" [(ngModel)]="pincode" name="pincode" required />
     </div>
 
     <div class="form-group">
       <label for="date">Event Date:</label>
-      <input id="date" type="date" [(ngModel)]="eventDate" name="eventDate" required />
+      <input id="date" type="date" [(ngModel)]="eventDate" name="eventDate" required (change)="filterNearestServices()" />
     </div>
 
     <!-- Function Hall Selection -->
     <div class="form-group">
       <label for="functionHall">Select Function Hall:</label>
-      <select id="functionHall" [(ngModel)]="selectedFunctionHall" name="functionHall" (change)="onFunctionHallChange($event)" required>
-        <option *ngFor="let hall of filteredFunctionHalls" [ngValue]="hall">
-          {{ hall.name }} ({{ hall.pincode }}) - ₹{{ hall.price }}
+      <select id="functionHall" [(ngModel)]="selectedFunctionHall" name="functionHall" (change)="onFunctionHallChange()" required>
+        <option *ngFor="let hall of availableFunctionHalls" [ngValue]="hall">
+          {{ hall.name }} ({{ hall.pincode || hall.location }}) - ₹{{ hall.price }}
         </option>
       </select>
       <a *ngIf="functionHallReviewLink" [href]="functionHallReviewLink" target="_blank">View Google Reviews</a>
@@ -42,9 +42,9 @@
     <!-- Hotel Selection -->
     <div class="form-group">
       <label for="hotel">Select Hotel:</label>
-      <select id="hotel" [(ngModel)]="selectedHotel" name="hotel" (change)="onHotelChange($event)" required>
-        <option *ngFor="let hotel of filteredHotels" [ngValue]="hotel">
-          {{ hotel.name }} ({{ hotel.pincode }}) - ₹{{ hotel.price }}
+      <select id="hotel" [(ngModel)]="selectedHotel" name="hotel" (change)="onHotelChange()" required>
+        <option *ngFor="let hotel of availableHotels" [ngValue]="hotel">
+          {{ hotel.name }} ({{ hotel.pincode || hotel.location }}) - ₹{{ hotel.price }}
         </option>
       </select>
       <a *ngIf="hotelReviewLink" [href]="hotelReviewLink" target="_blank">View Google Reviews</a>
@@ -53,9 +53,9 @@
     <!-- Catering Selection -->
     <div class="form-group">
       <label for="catering">Select Catering Vendor:</label>
-      <select id="catering" [(ngModel)]="selectedCatering" name="catering" (change)="onCateringChange($event)" required>
-        <option *ngFor="let catering of filteredCatering" [ngValue]="catering">
-          {{ catering.name }} ({{ catering.pincode }}) - ₹{{ catering.price }}
+      <select id="catering" [(ngModel)]="selectedCatering" name="catering" (change)="onCateringChange()" required>
+        <option *ngFor="let catering of availableCatering" [ngValue]="catering">
+          {{ catering.name }} ({{ catering.pincode || catering.location }}) - ₹{{ catering.price }}
         </option>
       </select>
       <a *ngIf="cateringReviewLink" [href]="cateringReviewLink" target="_blank">View Google Reviews</a>
@@ -65,8 +65,8 @@
     <div class="form-group">
       <label for="decoration">Decoration:</label>
       <select id="decoration" [(ngModel)]="selectedDecoration" name="decoration" (change)="onServiceDropdownChange('Decoration', selectedDecoration)" required>
-        <option *ngFor="let deco of filteredDecoration" [ngValue]="deco">
-          {{ deco.name }} ({{ deco.pincode }}) - ₹{{ deco.price }}
+        <option *ngFor="let deco of availableDecoration" [ngValue]="deco">
+          {{ deco.name }} ({{ deco.pincode || deco.location }}) - ₹{{ deco.price }}
         </option>
       </select>
     </div>
@@ -75,10 +75,27 @@
     <div class="form-group">
       <label for="photography">Photography:</label>
       <select id="photography" [(ngModel)]="selectedPhotography" name="photography" (change)="onServiceDropdownChange('Photography', selectedPhotography)" required>
-        <option *ngFor="let photo of filteredPhotography" [ngValue]="photo">
-          {{ photo.name }} ({{ photo.pincode }}) - ₹{{ photo.price }}
+        <option *ngFor="let photo of availablePhotography" [ngValue]="photo">
+          {{ photo.name }} ({{ photo.pincode || photo.location }}) - ₹{{ photo.price }}
         </option>
       </select>
+    </div>
+
+    <!-- Custom Search -->
+    <div class="form-group">
+      <label for="customSearch">Search Custom Service:</label>
+      <input id="customSearch" type="text" [(ngModel)]="searchQuery" name="searchQuery" />
+      <button type="button" (click)="searchCustomServices()">Search</button>
+    </div>
+
+    <div *ngIf="customSearchResults.length > 0">
+      <h3>Search Results</h3>
+      <ul>
+        <li *ngFor="let service of customSearchResults">
+          {{ service.serviceName }} - ₹{{ service.price }}
+          <button type="button" (click)="onServiceDropdownChange(service.serviceName, service)">Add</button>
+        </li>
+      </ul>
     </div>
 
     <!-- Selected Services Table -->
@@ -101,6 +118,6 @@
     <!-- Total Price -->
     <h3 class="total">Total Price: ₹{{ totalPrice }}</h3>
 
-    <button type="submit">proceed payment</button>
+    <button type="submit">Proceed Payment</button>
   </form>
 </div>

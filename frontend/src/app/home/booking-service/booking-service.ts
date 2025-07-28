@@ -27,6 +27,8 @@ export class BookingServiceComponent {
   hotelReviewLink = '';
   cateringReviewLink = '';
   functionHallReviewLink = '';
+  searchQuery = '';
+  customSearchResults: any[] = [];
 
   totalPrice = 0;
   selectedServiceDetails: { name: string; price: number }[] = [];
@@ -44,33 +46,41 @@ export class BookingServiceComponent {
       alert('Please enter event date and pincode');
       return;
     }
-
     this.bookingService.getNearestServices(this.pincode, this.eventDate)
       .subscribe((data: any) => {
-        this.availableHotels = data.hotels;
-        this.availableFunctionHalls = data.functionHalls;
-        this.availableCatering = data.catering;
-        this.availableDecoration = data.decoration;
-        this.availablePhotography = data.photography;
+        this.availableHotels = data.hotels || [];
+        this.availableFunctionHalls = data.functionHalls || [];
+        this.availableCatering = data.catering || [];
+        this.availableDecoration = data.decoration || [];
+        this.availablePhotography = data.photography || [];
         if (data.message) alert(data.message);
       });
   }
 
-  onHotelChange(event: any) {
+  searchCustomServices() {
+    if (!this.searchQuery || !this.pincode) {
+      alert('Enter search query & pincode');
+      return;
+    }
+    this.bookingService.searchCustomService(this.searchQuery, this.pincode)
+      .subscribe(data => this.customSearchResults = data);
+  }
+
+  onHotelChange() {
     if (this.selectedHotel) {
       this.hotelReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedHotel.name)}+reviews`;
       this.addOrReplaceService('Hotel', this.selectedHotel.price);
     }
   }
 
-  onCateringChange(event: any) {
+  onCateringChange() {
     if (this.selectedCatering) {
       this.cateringReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedCatering.name)}+reviews`;
       this.addOrReplaceService('Catering', this.selectedCatering.price);
     }
   }
 
-  onFunctionHallChange(event: any) {
+  onFunctionHallChange() {
     if (this.selectedFunctionHall) {
       this.functionHallReviewLink = `https://www.google.com/search?q=${encodeURIComponent(this.selectedFunctionHall.name)}+reviews`;
       this.addOrReplaceService('Function Hall', this.selectedFunctionHall.price);
@@ -93,27 +103,29 @@ export class BookingServiceComponent {
   }
 
   onSubmit() {
-    if (!this.eventDate || !this.selectedHotel || !this.selectedCatering) {
-      alert('Please select date, hotel, and catering vendor.');
+    if (!this.eventDate) {
+      alert('Please select event date.');
       return;
     }
-
     const bookingData = {
       name: this.name,
       email: this.email,
       phone: this.phone,
       pincode: this.pincode,
       eventDate: this.eventDate,
-      services: this.selectedServiceDetails,
+      services: this.selectedServiceDetails, // can be empty now
       totalPrice: this.totalPrice
     };
-
     this.bookingService.createBooking(bookingData).subscribe({
-      next: () => {
-        alert('Booking Successful!');
-        this.router.navigate(['/payment'], { queryParams: { amount: this.totalPrice } });
-      },
-      error: () => alert('Failed to save booking. Try again!')
+  next: (savedBooking) => {
+    alert('Booking Successful!');
+    // Pass bookingId to payment
+    this.router.navigate(['/payment'], {
+      queryParams: { amount: savedBooking.totalPrice, bookingId: savedBooking.id }
     });
+  },
+  error: () => alert('Failed to save booking. Try again!')
+});
+
   }
 }

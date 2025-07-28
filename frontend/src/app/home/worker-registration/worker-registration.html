@@ -1,48 +1,40 @@
-<div class="worker-container" @fadeIn>
+<div class="worker-container">
   <form (ngSubmit)="onSubmit()" #workerForm="ngForm">
-    <h2>Worker Registration</h2>
-    
+    <h2>Register Worker / Service Provider</h2>
+
+    <!-- Personal Information -->
+    <label for="name">Full Name:</label>
+    <input id="name" type="text" [(ngModel)]="worker.name" name="name" required />
+
+    <label for="phone">Phone:</label>
+    <input id="phone" type="tel" [(ngModel)]="worker.phone" name="phone" required />
+
+    <label for="email">Email:</label>
+    <input id="email" type="email" [(ngModel)]="worker.email" name="email" required />
+
+    <label for="location">Location / Pincode:</label>
+    <input id="location" type="text" [(ngModel)]="worker.location" name="location" required />
+
+    <label for="experience">Experience:</label>
+    <input id="experience" type="text" [(ngModel)]="worker.experience" name="experience" placeholder="e.g. 5 years" />
+
+    <!-- Service Type -->
     <label for="serviceType">Service Type:</label>
-    <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
-      <option value="">-- Select Service --</option>
-      <option value="catering">Catering</option>
-      <option value="catering-boys">Catering Boys</option>
-      <option value="vehicle">Vehicle for Transport</option>
-      <option value="hall">Function Hall</option>
-      <option value="decoration">Decoration</option>
+    <select id="serviceType" [(ngModel)]="worker.serviceType" name="serviceType" required>
+      <option value="">--Select--</option>
+      <option value="Hotel">Hotel</option>
+      <option value="Photography">Photography</option>
+      <option value="Catering">Catering</option>
+      <option value="Decoration">Decoration</option>
+      <option value="FunctionHall">Function Hall</option>
     </select>
 
-    <label for="location">Location (Pincode):</label>
-    <input type="text" id="location" [(ngModel)]="location" name="location" required />
-
+    <!-- Pricing -->
     <label for="price">Price (₹):</label>
-    <input type="number" id="price" [(ngModel)]="price" name="price" required />
+    <input id="price" type="number" [(ngModel)]="worker.price" name="price" required />
 
-    <!-- Conditional Fields -->
-    <div *ngIf="serviceType === 'catering'">
-      <label for="cateringItems">Catering Items:</label>
-      <input type="text" id="cateringItems" [(ngModel)]="cateringItems" name="cateringItems" placeholder="Eg: Veg/Non-Veg Menu" />
-    </div>
-
-    <div *ngIf="serviceType === 'catering-boys'">
-      <label for="cateringBoysCount">No. of Catering Boys:</label>
-      <input type="number" id="cateringBoysCount" [(ngModel)]="cateringBoysCount" name="cateringBoysCount" />
-    </div>
-
-    <div *ngIf="serviceType === 'vehicle'">
-      <label for="vehicleType">Vehicle Type:</label>
-      <input type="text" id="vehicleType" [(ngModel)]="vehicleType" name="vehicleType" placeholder="Eg: Truck/Van" />
-    </div>
-
-    <div *ngIf="serviceType === 'hall'">
-      <label for="hallCapacity">Hall Capacity:</label>
-      <input type="number" id="hallCapacity" [(ngModel)]="hallCapacity" name="hallCapacity" placeholder="Eg: 500" />
-    </div>
-
-    <div *ngIf="serviceType === 'decoration'">
-      <label for="decorationTheme">Decoration Theme:</label>
-      <input type="text" id="decorationTheme" [(ngModel)]="decorationTheme" name="decorationTheme" placeholder="Eg: Floral, Lighting" />
-    </div>
+    <label for="priceBasis">Price Basis:</label>
+    <input id="priceBasis" type="text" [(ngModel)]="worker.priceBasis" name="priceBasis" placeholder="per day / per event" required />
 
     <button type="submit">Register</button>
   </form>

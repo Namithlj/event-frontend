@@ -12,6 +12,10 @@ export class BookingService {
     return this.http.get(`${this.baseUrl}/nearest?pincode=${pincode}&date=${eventDate}`);
   }
 
+  searchCustomService(query: string, pincode: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/search?query=${query}&pincode=${pincode}`);
+  }
+
   createBooking(bookingData: any): Observable<any> {
     return this.http.post(this.baseUrl, bookingData);
   }
