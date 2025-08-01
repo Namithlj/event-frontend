@@ -1,5 +1,5 @@
 .booking-container {
-  background: url('/workerbg.jpg') no-repeat center center / cover;
+  background: url('../../../../public/workerbg.jpg') no-repeat center center / cover;
   min-height: 100vh;
   display: flex;
   justify-content: center;

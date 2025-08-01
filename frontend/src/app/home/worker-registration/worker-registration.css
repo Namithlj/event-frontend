@@ -1,5 +1,5 @@
 .worker-container {
-  background: url('/work.jpeg') no-repeat center center/cover;
+  background: url('../../../../public/work.jpeg') no-repeat center center/cover;
   min-height: 100vh;
   display: flex;
   justify-content: center;

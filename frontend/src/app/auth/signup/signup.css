@@ -9,7 +9,7 @@
   /* Background image + dark overlay */
   background:
     linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url('/signup.jpeg') no-repeat center center/cover;
+    url('../../../../public/signup.jpeg') no-repeat center center/cover;
 }
 
 /* Signup Card */
