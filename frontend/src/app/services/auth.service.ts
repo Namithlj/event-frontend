@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'https://event-backend-rp99.onrender.com';
+  private baseUrl = 'https://event-backend-rp99.onrender.com/';
 
   constructor(private http: HttpClient) {}
 
