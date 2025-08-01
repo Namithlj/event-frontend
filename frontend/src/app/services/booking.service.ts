@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private baseUrl = 'http://localhost:8080/api/bookings';
+  private baseUrl = 'https://event-management-2-aglg.onrender.com/api/bookings';
 
   constructor(private http: HttpClient) {}
 
