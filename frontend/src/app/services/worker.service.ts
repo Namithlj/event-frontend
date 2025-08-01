@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class WorkerService {
-  private baseUrl = 'https://event-management-2-aglg.onrender.com/api/workers';
+  private baseUrl = 'https://event-backend-rp99.onrender.com/api/workers';
 
   constructor(private http: HttpClient) {}
 

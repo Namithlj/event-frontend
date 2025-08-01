@@ -11,7 +11,7 @@ export interface RazorpayOrderResponse {
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  private baseUrl = 'https://event-management-2-aglg.onrender.com/api/payments';
+  private baseUrl = 'https://event-backend-rp99.onrender.com/api/payments';
 
   constructor(private http: HttpClient) {}
 
